@@ -10,10 +10,12 @@
     "coverage": "jest --coverage"
   },
   "dependencies": {
-    "@prismicio/client": "^4.0.0",
+    "@prismicio/client": "4.0.0",
     "date-fns": "^2.19.0",
-    "next": "10.0.7",
+    "next": "^12.0.10",
+    "prismic": "^0.0.1",
     "prismic-dom": "^2.2.5",
+    "prismic.io": "^3.6.1",
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "react-icons": "^4.2.0",
