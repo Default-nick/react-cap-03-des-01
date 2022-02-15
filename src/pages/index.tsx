@@ -30,9 +30,10 @@ interface PostPagination {
 
 interface HomeProps {
   postsPagination: PostPagination;
+  preview: boolean;
 }
 
-export default function Home({ postsPagination }: HomeProps) {
+export default function Home({ postsPagination, preview }: HomeProps) {
   const formattedPost = postsPagination.results.map(post => {
     return {
       ...post,
@@ -67,7 +68,7 @@ export default function Home({ postsPagination }: HomeProps) {
           { locale: ptBR }
         ),
         data: {
-          title: post.data.titulo,
+          title: post.data.title,
           subtitle: post.data.subtitle,
           author: post.data.author,
         },
@@ -108,17 +109,26 @@ export default function Home({ postsPagination }: HomeProps) {
             </button>
           )}
         </div>
+        {preview && (
+          <>
+            <aside>
+              <Link href="/api/exit-preview">
+                <a className={commonStyles.preview}>Sair do modo Preview</a>
+              </Link>
+            </aside>
+          </>
+        )}
       </main>
     </>
   );
 }
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getStaticProps: GetStaticProps = async ({ preview = false }) => {
   const prismic = getPrismicClient();
   const postsResponse = await prismic.query(
     [Prismic.Predicates.at('document.type', 'posts')],
     {
-      pageSize: 1,
+      pageSize: 2,
     }
   );
 
@@ -127,7 +137,7 @@ export const getStaticProps: GetStaticProps = async () => {
       uid: post.uid,
       first_publication_date: post.first_publication_date,
       data: {
-        title: post.data.titulo,
+        title: post.data.title,
         subtitle: post.data.subtitle,
         author: post.data.author,
       },
@@ -142,6 +152,7 @@ export const getStaticProps: GetStaticProps = async () => {
   return {
     props: {
       postsPagination,
+      preview,
     },
   };
 };
